@@ -8,25 +8,22 @@ want = list(map(int, input().split()))
 cnt = 0
 
 for next in want:
+    dis = 0
     if next == queue[0]:
         queue.popleft()
         n -= 1
-        print(queue, cnt)
         continue
 
-    dis = 
-    if dis <= n // 2 + 1:
-        while queue[0] != next:
-            queue.append(queue.popleft())
-            cnt += 1
-        queue.popleft()
+    while queue[0] != next:
+        queue.append(queue.popleft())
+        dis += 1
+    
+    if dis <= len(queue) // 2:
+        cnt += dis
     else:
-        while queue[0] != next:
-            queue.appendleft(queue.pop())
-            cnt += 1
-        queue.popleft()
-    print(queue, cnt)
-    n -= 1
+        cnt += len(queue) - dis
         
+    queue.popleft()
+    
 print(cnt)
 
