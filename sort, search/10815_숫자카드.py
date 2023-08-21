@@ -2,23 +2,14 @@
 import sys
 input = sys.stdin.readline
 
-n = int(input())
-cards = list(map(int, input().split()))
-k = int(input())
-needs = list(map(int, input().split()))
-ans = []
+### binary search 풀이
 
-for next in needs:
-    flag = False
-    if next in cards:
-        flag = True
-    if flag:
-        ans.append(1)
-    else:
-        ans.append(0)
+# n = int(input())
+# cards = list(map(int, input().split()))
+# k = int(input())
+# needs = list(map(int, input().split()))
 
-print(*ans)
-
+# ans = []
 
 ### binary search 풀이
 # ans = []
@@ -47,3 +38,16 @@ print(*ans)
 
 # print(*ans)
         
+### 날먹풀이
+n = int(input())
+cards = set(map(int, input().split()))
+k = int(input())
+wants = list(map(int, input().split()))
+ans = []
+for next in wants:
+    if next in cards: ### set에서 in은 시간복잡도가 1
+        ans.append(1)
+    else:
+        ans.append(0)
+
+print(*ans)
