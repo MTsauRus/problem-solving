@@ -28,7 +28,6 @@ def topology_sort():
         for next in G[now]:
             indegree[next] -= 1
             ans[next] = max(ans[next], ans[now]+times[now])
-            #ans[next] = ans[now] + times[now]
             if indegree[next] == 0:
                 queue.append(next)
                 

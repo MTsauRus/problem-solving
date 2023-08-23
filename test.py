@@ -1,3 +1,2 @@
-a = {1,2,3}
-for i in a:
-    print(i)
+print(int(1.8*1))
+print(int(0.3))
