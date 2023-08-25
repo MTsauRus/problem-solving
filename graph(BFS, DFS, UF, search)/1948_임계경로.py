@@ -10,7 +10,7 @@ G = [[] for v in range(V+1)]
 G_R = [[] for v in range(V+1)]
 minute = [0] * (V+1)
 indegree = [0] * (V+1)
-indegree_R = [0] * (V+1)
+
 for i in range(E):
     a, b, dis = map(int, input().split())
     G[a].append((b, dis))
@@ -36,7 +36,7 @@ print(minute[end])
 def topology_sort_reverse(end):
     queue = deque()
     queue.append(end)
-    ans = 1
+    ans = 0
     visited = [False] * (V+1)
     visited[end] = True
 
@@ -44,8 +44,8 @@ def topology_sort_reverse(end):
         now = queue.popleft()
         for next in G_R[now]:
             if minute[now] == minute[next[0]] + next[1]:
+                ans+=1
                 if not visited[next[0]]:
-                    ans += 1
                     queue.append(next[0])
                     visited[next[0]] = True
     return ans
