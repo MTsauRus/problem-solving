@@ -1,7 +1,9 @@
-D = dict()
-D[1] = "a"
-D[2] = "b"
-
-print(D[1]) 
-print(D[2]) 
-print(D.keys())
+while True:
+    cnt = 0
+    tmp = input().strip()
+    if tmp[-1] == "#":
+        break
+    for ch in tmp:
+        if ch in ["i", "e", "a", "o", "u"]:
+            cnt += 1
+    print(cnt)
