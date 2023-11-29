@@ -1,4 +1,4 @@
-### 깊이 우선 탐색 1 (S2), 깊이 우선 탐색 2 (S2)
+### 깊이 우선 탐색 1 (S2), 깊이 우선 탐색 2 (S2), 깊이 우선 탐색 3 (S2)
 import sys
 from heapq import heappush, heappop
 sys.setrecursionlimit(10**6)
@@ -8,25 +8,24 @@ G = [[] for _ in range(V+1)]
 
 for i in range(E):
     a, b = map(int, input().split())
-    heappush(G[a], -b)
-    heappush(G[b], -a)
+    heappush(G[a], b)
+    heappush(G[b], a)
     
     
-visited = [0] * (V+1)
+visited = [False] * (V+1)
+ans = [-1] * (V+1)
 
-global num
-num = 2
-def dfs(a):
-    global num
+def dfs(a, depth):
     for i in range(len(G[a])):
-        next = -heappop(G[a])
-        if visited[next] == 0:
-            visited[next] = num
-            num += 1
-            dfs(next)
+        next = heappop(G[a])
+        if not visited[next]:
+            visited[next] = True
+            ans[next] = depth
+            dfs(next, depth+1)
             
-visited[s] = 1            
-dfs(s)
+visited[s] = True
+dfs(s, 1)
+ans[s] = 0
 
 for i in range(1, V+1):
-    print(visited[i])            
+    print(ans[i])            
