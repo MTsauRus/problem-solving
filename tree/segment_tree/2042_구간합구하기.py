@@ -15,7 +15,7 @@ def init(arr, tree, node, start, end):
 # return sum[left, right]
 def query(tree, node, start, end, left, right):
     if right < start or left > end:
-        return 0
+        return 0    
     if left <= start and end <= right:
         return tree[node]
     lsum = query(tree, node*2, start, (start+end)//2, left, right)
