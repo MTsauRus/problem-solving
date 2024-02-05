@@ -1,3 +1,4 @@
 import sys
-a = sys.stdin.readlines()
-print(len(a))
+
+print('a' in "asd")
+print('asd' in 'a')
