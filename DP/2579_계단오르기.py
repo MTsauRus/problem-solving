@@ -1,25 +1,28 @@
-### 계단 오르기 (S3)
+"""
+계단 오르기 (S3)
+DP
+"""
 import sys
 input = sys.stdin.readline
 
-N = int(input())
+n = int(input())
 score = []
-for _ in range(N):
+for _ in range(n):
     score.append(int(input()))
 
-if N == 1:
+if n == 1:
     print(score[0])
     exit(0)
-if N == 2:
-    print(score[0]+score[1])
+if n == 2:
+    print(sum(score))
     exit(0)
 
-D = [0] * N
+D = [0 for i in range(n+2)]
 D[0] = score[0]
-D[1] = score[0]+score[1]
-D[2] = max(score[0]+score[2], score[1]+score[2])
+D[1] = score[0] + score[1]
+D[2] = max(score[0] + score[2], score[1] + score[2])
 
-for i in range(2, N):
-    D[i] = max(score[i] + D[i-2], score[i] + score[i-1] + D[i-3])
+for i in range(3, n):
+    D[i] = max(D[i-2]+score[i], D[i-3]+score[i-1]+score[i])
 
-print(D[N-1])
+print(D[n-1])
