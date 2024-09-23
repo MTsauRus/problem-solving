@@ -19,3 +19,4 @@ for i in range(N, 0, -1):
 
 print(ans[1])
 
+sys.setRecursionlimit(10**6)
