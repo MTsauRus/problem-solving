@@ -3,10 +3,18 @@
 import sys
 input = sys.stdin.readline
 
-N, M = map(int, input().split())
-l = [i for i in range(N+1)]
-def solve(N, M):
-    ans = []
-    for i in range(1, N+1):
+lim, length = map(int, input().split())
+
+def func(lim, length, arr, used):
+    if len(arr) == length:
+        print(*arr)
+        return
+    
+    for i in range(1, lim+1):
+        if not used[i]:
+            used[i] = True
+            func(lim, length, arr + [i], used)
+            used[i] = False
         
-        
+used = [False for i in range(lim+1)]    
+func(lim, length, [], used)
