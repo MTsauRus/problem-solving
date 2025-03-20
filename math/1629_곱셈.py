@@ -1,5 +1,5 @@
 ### 곱셈 (S1)
-### 수학
+### 수학, 분할정복을 이용한 거듭제곱, 모듈로 연산
 import sys
 input = sys.stdin.readline
 
