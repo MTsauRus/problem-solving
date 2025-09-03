@@ -1,5 +1,5 @@
 ### 아리스, 청소합니다! (Easy) (G2)
-### 
+### 구현
 import sys
 input = sys.stdin.readline
 
