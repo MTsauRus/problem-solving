@@ -1,2 +1,2 @@
-a = [[] for _ in range(3)]
-print(a)
+a = float('inf')
+print(a<25)
