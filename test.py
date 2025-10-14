@@ -1,2 +1,2 @@
-a = float('inf')
-print(a<25)
+a = []
+a.pop()
