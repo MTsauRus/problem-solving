@@ -21,13 +21,11 @@ while D[x][y] > 0:
     nx2, ny2 = x, y-1
     if D[x][y] == D[nx1][ny1]:
         x, y = nx1, ny1
-        continue
     elif D[x][y] == D[nx2][ny2]:
         x, y = nx2, ny2
-        continue
     else:
         ans_str += a[x]
-        x, y = nx1, ny1
+        x, y = x-1, y-1
 
 print(ans_len)
 ans = ""
