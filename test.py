@@ -1,3 +1,2 @@
-from collections import deque
-a = deque([0, 0])
-print(a.popleft())
+a = "".join(["123","12"])
+print(a)
