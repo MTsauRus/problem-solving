@@ -1,5 +1,6 @@
 ### 2467 용액
 ### 구현, 투 포인터
+### 세 용액 버전: 2473
 import sys
 input = sys.stdin.readline
 
