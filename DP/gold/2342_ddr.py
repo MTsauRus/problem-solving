@@ -28,8 +28,8 @@ for k in range(2, len(arr)):
 ans = 4000000
 for i in range(5):
     for j in range(5):
-        if ans > D[len(nums)][i][j]:
-            ans = D[len(nums)][i][j]
+        if ans > D[len(arr)-1][i][j]:
+            ans = D[len(arr)-1][i][j]
 
 print(ans)
 print(D)
