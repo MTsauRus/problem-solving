@@ -1,3 +1,4 @@
-for i in range(2, 5):
-    for j in range(i, 10, i):
-        print(j)
+c = [1, 2]
+a, b = c
+print(a, b)
+print(a)
