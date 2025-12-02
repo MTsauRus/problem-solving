@@ -1,41 +1,48 @@
-### 1238. 파티 (G3)
-### 그래프 탐색, 다익스트라?
+### 1520. 내리막길 (G3)
+### 백트래킹, dfs << 안됨
+### DP
 import sys
 input = sys.stdin.readline
-from heapq import heappush, heappop
 
-V, E, X = map(int, input().split())
-G = [[] for _ in range(V+1)]
-for i in range(E):
-    s, e, w = map(int, input().split())
-    G[s].append([w, e]) # 가중치, 도착지
+R, C = map(int, input().split())
+G = []
+for i in range(R):
+    G.append(list(map(int, input().split())))
     
-def dijkstra(s):
-    queue = [[0, s]]
-    dist = [float('inf') for _ in range(V+1)]
-    dist[s] = 0
-    
-    while queue:
-        now_dist, now_node = heappop(queue)
-        if now_dist > dist[now_node]:
-            continue # 새로 꺼낸 거리가 기존 최단거리보다 크면 패스
-        for next in G[now_node]:
-            next_weight, next_node = next[0], next[1]
-            next_dist = next_weight + now_dist
-            if next_dist < dist[next_node]:
-                dist[next_node] = next_dist
-                heappush(queue, [next_dist, next_node])
-    return dist
+D = [[0 for _ in range(C)] for _ in range(R)] # D[r][c]: [r, c]->[R-1, C-1]로 가는 경우의 수
+D[R-1][C-1] = 0
 
-dist_go = [0 for _ in range(V+1)]
-for i in range(1, V+1):
-    if i == X:
-        dist_back = dijkstra(i)
-    else:
-        dist_go[i] = dijkstra(i)[X]
-    
-ans = 0
-for i in range(1, V+1):
-    ans = max(ans, dist_go[i] + dist_back[i])
 
-print(ans)
+
+
+# import sys
+# input = sys.stdin.readline
+# sys.setrecursionlimit(10**9)
+# R, C = map(int, input().split())
+# G = []
+# for i in range(R):
+#     G.append(list(map(int, input().split())))
+    
+# ans = 0
+# visited = [[False for _ in range(C)] for _ in range(R)]
+# dr = [0, 0, 1, -1]
+# dc = [1, -1, 0, 0]
+
+# def dfs(r, c):
+#     global ans
+
+#     if r == R-1 and c == C-1:
+#         ans += 1
+#         return
+    
+#     for i in range(4):
+#         nr = r + dr[i]
+#         nc = c + dc[i]
+#         if 0 <= nr < R and 0 <= nc < C and not visited[nr][nc]:
+#             if G[r][c] > G[nr][nc]: # 다음칸이 더 작다면
+#                 visited[nr][nc] = True
+#                 dfs(nr, nc)
+#                 visited[nr][nc] = False
+
+# dfs(0, 0)
+# print(ans)
