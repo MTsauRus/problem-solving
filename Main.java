@@ -1,32 +1,77 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String args[]) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+    
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringBuilder sb = new StringBuilder();
+    static StringTokenizer st;
 
-        int N = Integer.parseInt(br.readLine());
+    public static void main(String[] args) throws IOException {
+        int T = Integer.parseInt(br.readLine());
 
-        Queue<Integer> leftHeap = new PriorityQueue<>(Collections.reverseOrder()); // 최대 힙
-        Queue<Integer> rightHeap = new PriorityQueue<>(); // 최소 힙, 디폴트
-
-        for (int i = 0; i < N; i++) {
-            int nextNum = Integer.parseInt(br.readLine());
-
-            if (leftHeap.size() == rightHeap.size()) { // 힙 크기가 같은 경우 왼쪽 힙에 넣음
-                leftHeap.offer(nextNum); // 파이썬과 달리 처음 선언할 때 최대 힙으로 선언했으므로 음수 안넣어도 됨
-            } else {
-                rightHeap.offer(nextNum);
-            }
-            
-            // 순서가 바뀌어 들어갔다면
-            if (!rightHeap.isEmpty() && rightHeap.peek() < leftHeap.peek()) {
-                rightHeap.offer(leftHeap.poll());
-                leftHeap.offer(rightHeap.poll());
-            }
-        sb.append(leftHeap.peek()).append('\n');
+        for (int t = 0; t < T; t++) {
+            solve();
         }
         System.out.println(sb);
+    }
+
+    private static void solve() throws IOException {
+        String command = br.readLine();
+        int N = Integer.parseInt(br.readLine());
+        String inputStr = br.readLine();
+
+        Deque<Integer> dq = new ArrayDeque<>();
+        
+
+        st = new StringTokenizer(inputStr.substring(1, inputStr.length() - 1), ",");
+        
+        while (st.hasMoreTokens()) {
+            dq.offer(Integer.parseInt(st.nextToken()));
+        }
+
+        boolean isReverse = false;
+        boolean isError = false;
+
+        for (char cmd : command.toCharArray()) {
+            if (cmd == 'R') {
+                isReverse = !isReverse; 
+            } else { 
+                if (dq.isEmpty()) {
+                    isError = true;
+                    break;
+                }
+
+                if (isReverse) {
+                    dq.pollLast();
+                } else {
+                    dq.pollFirst();
+                }
+            }
+        }
+
+        if (isError) {
+            sb.append("error\n");
+        } else {
+            makeOutput(dq, isReverse);
+        }
+    }
+
+    private static void makeOutput(Deque<Integer> dq, boolean isReverse) {
+        sb.append('[');
+        
+        while (!dq.isEmpty()) {
+            if (isReverse) {
+                sb.append(dq.pollLast());
+            } else {
+                sb.append(dq.pollFirst());
+            }
+        
+            if (!dq.isEmpty()) {
+                sb.append(',');
+            }
+        }
+        
+        sb.append(']').append('\n');
     }
 }
