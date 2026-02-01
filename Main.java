@@ -8,70 +8,18 @@ public class Main {
     static StringTokenizer st;
 
     public static void main(String[] args) throws IOException {
-        int T = Integer.parseInt(br.readLine());
 
-        for (int t = 0; t < T; t++) {
-            solve();
-        }
-        System.out.println(sb);
-    }
+        String org = "1234567890";
 
-    private static void solve() throws IOException {
-        String command = br.readLine();
-        int N = Integer.parseInt(br.readLine());
-        String inputStr = br.readLine();
+        char[] ch = org.toCharArray();
+        int[] intArr = new int[org.length()];
 
-        Deque<Integer> dq = new ArrayDeque<>();
-        
-
-        st = new StringTokenizer(inputStr.substring(1, inputStr.length() - 1), ",");
-        
-        while (st.hasMoreTokens()) {
-            dq.offer(Integer.parseInt(st.nextToken()));
+        for (int i  = 0; i < org.length(); i++) {
+            intArr[i] = (ch[i] - '0');
         }
 
-        boolean isReverse = false;
-        boolean isError = false;
-
-        for (char cmd : command.toCharArray()) {
-            if (cmd == 'R') {
-                isReverse = !isReverse; 
-            } else { 
-                if (dq.isEmpty()) {
-                    isError = true;
-                    break;
-                }
-
-                if (isReverse) {
-                    dq.pollLast();
-                } else {
-                    dq.pollFirst();
-                }
-            }
-        }
-
-        if (isError) {
-            sb.append("error\n");
-        } else {
-            makeOutput(dq, isReverse);
-        }
-    }
-
-    private static void makeOutput(Deque<Integer> dq, boolean isReverse) {
-        sb.append('[');
-        
-        while (!dq.isEmpty()) {
-            if (isReverse) {
-                sb.append(dq.pollLast());
-            } else {
-                sb.append(dq.pollFirst());
-            }
-        
-            if (!dq.isEmpty()) {
-                sb.append(',');
-            }
-        }
-        
-        sb.append(']').append('\n');
+        System.out.println(Arrays.toString(ch));
+        System.out.println(Arrays.toString(intArr));
     }
 }
+  
