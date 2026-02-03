@@ -3,6 +3,7 @@ package javaps.boj.gold;
 import java.util.*;
 import java.io.*;
 
+// 260202
 // SSAFY 스터디 문제
 // 15683. 감시 (G3)
 // 시뮬레이션, 백트래킹, 깊은 복사
