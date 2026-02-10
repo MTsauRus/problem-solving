@@ -41,11 +41,11 @@ public class JUN3109_Bakery_김성령 {
             int nc = c + 1;
 
             if (0 <= nr && nr < R && 0 <= nc && nc < C && board[nr][nc] == '.') {
-                if (visited[nr][nc]) return false;
+                if (visited[nr][nc]) continue;
                 visited[nr][nc] = true;
-                if (dfs(nr, nc)) return false; // 이전회차에서 이미 도달한 경우 그냥 트루 찍고 나옴
+                if (dfs(nr, nc)) return true; // 이전회차에서 이미 도달한 경우 그냥 트루 찍고 나옴
             }
         }
-        return true;
+        return false;
     }
 }
