@@ -6,15 +6,8 @@ import java.io.*;
 public class codeTree_맵방문하기 {
     static int R, C, cnt;
     static char[][] board;
-    static int[][][] visited; // 시간절약을 위한 int visited
-    static class Node {
-        int r;
-        int c;
-        Node(int r, int c) {
-            this.r = r;
-            this.c = c;
-        }
-    }
+    static int[][] visited; // 시간절약을 위한 int visited
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -22,7 +15,7 @@ public class codeTree_맵방문하기 {
         R = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
         board = new char[R][C];
-        visited = new int[5][R][C];
+        visited = new int[R][C];
 
         for (int i = 0; i < R; i++) {
             board[i] = br.readLine().toCharArray();
@@ -51,14 +44,14 @@ public class codeTree_맵방문하기 {
     static char[] magicKeyword = {'U', 'D', 'L', 'R'};
     
     static int normalBfs(int r, int c) {
-        Deque<Node> dq = new ArrayDeque<>();
-        dq.offer(new Node(r, c));
+        Deque<Integer[]> dq = new ArrayDeque<>();
+        dq.offer(new Integer[]{r, c});
         int max = 0;
-
+        cnt++;
         while (!dq.isEmpty()) {
-            Node now = dq.pollFirst();
+            Integer[] now = dq.pollFirst();
 
-            char nextDir = board[now.r][now.c]; // 현재 방향 체크
+            char nextDir = board[now[0]][now[1]]; // 현재 방향 체크
             int dir = 0;
 
             if (nextDir == 'U') dir = 0;
@@ -66,13 +59,13 @@ public class codeTree_맵방문하기 {
             else if (nextDir == 'L') dir = 2;
             else if (nextDir == 'R') dir = 3;
             
-            int nr = now.r + dr[dir];
-            int nc = now.c + dc[dir];
+            int nr = now[0] + dr[dir];
+            int nc = now[1] + dc[dir];
 
-            if (nr < 0 || nr >= R || nc < 0 || nc >= C || (visited[4][nr][nc] == cnt)) continue;
+            if (nr < 0 || nr >= R || nc < 0 || nc >= C || (visited[nr][nc] == cnt)) continue;
 
-            visited[4][nr][nc] = cnt;
-            dq.offer(new Node(nr, nc));
+            visited[nr][nc] = cnt;
+            dq.offer(new Integer[] {nr, nc});
             max++;
         }
         return max;
@@ -87,18 +80,18 @@ public class codeTree_맵방문하기 {
                 int localMax = 1;
                 cnt++;
 
-                Deque<Node> dq = new ArrayDeque<>();
-                dq.offer(new Node(r, c));
-                visited[j][r][c] = cnt;
+                Deque<Integer[]> dq = new ArrayDeque<>();
+                dq.offer(new Integer[]{r, c});
+                visited[r][c] = cnt;
 
                 while (!dq.isEmpty()) {
-                    Node now = dq.pollFirst();
+                    Integer[] now = dq.pollFirst();
                     int dir = 0;
-                    char nextDir = board[now.r][now.c]; // 현재 방향 체크
+                    char nextDir = board[now[0]][now[1]]; // 현재 방향 체크
 
-                    if (i < R && now.r == magic) {
+                    if (i < R && now[0] == magic) {
                         nextDir = magicKeyword[j];
-                    } else if (i >= R && now.c == magic) {
+                    } else if (i >= R && now[1] == magic) {
                         nextDir = magicKeyword[j];
                     }
 
@@ -107,13 +100,13 @@ public class codeTree_맵방문하기 {
                     else if (nextDir == 'L') dir = 2;
                     else if (nextDir == 'R') dir = 3;
                     
-                    int nr = now.r + dr[dir];
-                    int nc = now.c + dc[dir];
+                    int nr = now[0] + dr[dir];
+                    int nc = now[1] + dc[dir];
 
-                    if (nr < 0 || nr >= R || nc < 0 || nc >= C || (visited[j][nr][nc] == cnt)) continue;
+                    if (nr < 0 || nr >= R || nc < 0 || nc >= C || (visited[nr][nc] == cnt)) continue;
 
-                    visited[j][nr][nc] = cnt;
-                    dq.offer(new Node(nr, nc));
+                    visited[nr][nc] = cnt;
+                    dq.offer(new Integer[] {nr, nc});
                     localMax++;
                     }
                     max = Math.max(max, localMax);
