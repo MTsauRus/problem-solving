@@ -1,10 +1,12 @@
 package programmers;
+
 class Solution {
     static int maxMember = 0;
     static int maxEarn = 0;
     static int[][] globalUsers;
     static int[] globalEmoticons;
     static int[] userStatus;
+    static boolean[] isUserMember;
     
     public int[] solution(int[][] users, int[] emoticons) {
         int[] answer;
@@ -12,6 +14,7 @@ class Solution {
         globalEmoticons = emoticons;
         
         userStatus = new int[users.length];
+        isUserMember = new boolean[users.length];
         
         backtrack(0, emoticons.length, 0, 0, 10);
         backtrack(0, emoticons.length, 0, 0, 20);
@@ -37,11 +40,13 @@ class Solution {
         }
         
         int[] nowUserBacktrack = userStatus.clone();
-        int nowEmoticonPrice = (int)((double)globalEmoticons[depth] * (0.01 * (100 - saleRatio)));
+        boolean[] nowMemberBacktrack = isUserMember.clone();
+        int nowEmoticonPrice = (int)((double) (globalEmoticons[depth] * (100 - saleRatio)) * 0.01);
         int nowMembership = membership;
         int nowEarn = earn;
         
         for (int i = 0; i < globalUsers.length; i++) {
+            if (isUserMember[i]) continue;
             if (globalUsers[i][0] <= saleRatio) {
                 userStatus[i] += nowEmoticonPrice;
                 nowEarn += nowEmoticonPrice;
@@ -50,6 +55,7 @@ class Solution {
                     nowEarn -= userStatus[i];
                     userStatus[i] = 0;
                     nowMembership++;
+                    isUserMember[i] = true;
                 }
             }
         }
@@ -60,5 +66,6 @@ class Solution {
         
         // 백트래킹
         userStatus = nowUserBacktrack;
+        isUserMember = nowMemberBacktrack;
     }
 }
