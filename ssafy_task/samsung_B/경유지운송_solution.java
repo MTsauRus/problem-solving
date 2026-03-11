@@ -1,3 +1,4 @@
+package ssafy_task.samsung_B;
 import java.util.*;
 
 class UserSolution {
