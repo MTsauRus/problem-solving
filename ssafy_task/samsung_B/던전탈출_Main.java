@@ -13,7 +13,7 @@ class 던전탈출_Main {
 	private static final int MAX_N					= 350;
 
 	private static int[][] map = new int[MAX_N][MAX_N];
-	private static UserSolution usersolution = new UserSolution();
+	private static 던전탈출_UserSolution usersolution = new 던전탈출_UserSolution();
 	private static Scanner sc;
 
 	private static boolean run() throws Exception 	{
