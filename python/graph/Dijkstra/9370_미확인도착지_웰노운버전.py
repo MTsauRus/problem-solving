@@ -1,21 +1,19 @@
-### 9370. 미확인 도착지 (G2)
+### 9370. 미확인 도착지 - 다른버전 (G2)
 ### 다익스트라
-
 """
-특정 엣지 m1m2를 반드시 지나야 하는 경우
-start, m1, m2에서 각각 다익스트라를 돌린다. 
-start -> m1 -> m2 -> end의 거리, start -> m2 -> m1 -> end의 거리를 각각 구한다.
-그 후, start에서 돌린 다익스트라의 dist[end]와 비교하여 위에서 구한 거리가 같으면 m1m2를 반드시 지난다고 할 수 있다.
-
-dist1 = dist_start[m1] + m1m2 + dist_m2[end]
-dist2 = dist_start[m2] + m2m1 + dist_m1[end]
-
-if (dist_start[end] == dist1 or dist_start[end] == dist2): ans += 1
+이 문제의 경우, 반드시 지나야 하는 경로가 하나 뿐이다.
+이 경우, 모든 엣지의 weight에 2를 곱해주고, 
+반드시 지나야 하는 엣지의 weight에만 1을 빼준다. 
+start에서 다익스트라를 딱 한 번 돌리고, 
+특정 노드에서의 dist 값이 홀수라면 
+이 노드를 가기 위한 최단경로에 반드시 지나야 하는 엣지가 포함되어 있음이 보장된다. 
 """
 
 import sys
 from heapq import heappush, heappop
 input = sys.stdin.readline
+
+
 
 def dijkstra(start):
     global G
@@ -40,12 +38,12 @@ for t in range(T):
     V, E, K = map(int, input().split())
     start, m1, m2 = map(int, input().split())
     G = [[] for _ in range(V+1)]
-    edgeLen = 0
     for _ in range(E):
         s, e, w = map(int, input().split())
         if (s, e) == (m1, m2) or (s,e) == (m2, m1):
-            edgeLen = w
-            
+            w = w*2-1
+        else:
+            w = w*2
         G[s].append((w, e))
         G[e].append((w, s))
         
@@ -54,15 +52,11 @@ for t in range(T):
         goals.append(int(input()))
 
     dist_s = dijkstra(start)
-    dist_m1 = dijkstra(m1)
-    dist_m2 = dijkstra(m2)
     
     ans = []
     
     for next in goals:
-        dist12 = dist_s[m1] + edgeLen + dist_m2[next]
-        dist21 = dist_s[m2] + edgeLen + dist_m1[next]
-        if (dist_s[next] == dist12 or dist_s[next] == dist21):
+        if dist_s[next]%2:
             ans.append(next)
 
     ans.sort()
