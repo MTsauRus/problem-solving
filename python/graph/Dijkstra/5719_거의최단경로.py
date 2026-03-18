@@ -5,15 +5,18 @@ import sys
 from heapq import heappush, heappop
 input = sys.stdin.readline
 
+## 이거 bfs로 해도 됨~
 def dfs(now):
     global skip
     if now == start: return
     
     for nw, nv in G_rev[now]:
+
+        if skip[nv][now]: continue
         # 현재까지의 최단거리 == 이전까지의 최단거리 + nv->now 엣지의 nw
-        # 이게 같으면 최단경로를 구성하는 엣지임이 보장됨
         if dist[now] == dist[nv] + nw:
-            skip[nv] = True
+            # 뒤집어서 체크해야 함
+            skip[nv][now] = True
             dfs(nv)
     
 while True:
@@ -22,7 +25,7 @@ while True:
     start, end = map(int, input().split())
     G = [[] for _ in range(V)]
     G_rev = [[] for _ in range(V)] # 역추적을 위한 반대그래프
-    skip = [False for _ in range(V)] # 최단 경로를 구성하는 노드 여부
+    skip = [[False]*V for _ in range(V)] # 최단 경로를 구성하는 노드 여부
     dist = [float('inf')] * V
     dist_ans = [float('inf')] * V
     dist[start] = 0
@@ -48,7 +51,7 @@ while True:
     # 역방향 dfs 최소 경로 추적
     dfs(end)
     # 시작지점 복원
-    skip[start] = False
+    #skip[start] = False
     
     # 다시 다익스트라 시작
     pq = [(0, start)]
@@ -58,13 +61,10 @@ while True:
         
         for nw, nv in G[cv]:
             # 다음 노드가 최단거리 구성에 포함되어 있다면 건너뜀
-            if skip[nv]: continue
+            if skip[cv][nv]: continue
             next_dist = cw + nw
             if dist_ans[nv] > next_dist:
                 dist_ans[nv] = next_dist
                 heappush(pq, (next_dist, nv))
     
     print(-1) if dist_ans[end] == float('inf') else print(dist_ans[end])
-    print(skip)
-    print(dist)
-    print(dist_ans)
