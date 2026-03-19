@@ -1,6 +1,6 @@
 import sys
 
-from solution import init, add, calculate
+from 커피점제과점_solution_가지치기코드 import init, add, calculate
 
 CMD_INIT = 100
 CMD_ADD = 200
