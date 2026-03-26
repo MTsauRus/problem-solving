@@ -1,5 +1,5 @@
 import sys
-from solution import init, writeWord, eraseWord
+from 단어암기장_solution import init, writeWord, eraseWord
 
 CMD_INIT = 1
 CMD_WRITE = 2

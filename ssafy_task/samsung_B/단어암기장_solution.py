@@ -1,4 +1,3 @@
-from heapq import heappush, heappop
 N = 0
 M = 0
 T = []
@@ -7,14 +6,15 @@ words = {}
 # row_words[행번호]: (시작열, 끝열)
 row_words = []
 
-
-
 def init(n:int, m:int) -> None:
+    global N, M, T, row_words, words
+    words.clear()
     N = n
     M = m
     T = [M] * (N*4)
     # 1-based, 행번호는 1부터 시작
-    row_words = [[] for _ in range(N+1)]
+    # 시작 노드, 끝노드 미리 저장해놈
+    row_words = [[(-1, -1), (M, M)] for _ in range(N+1)]
     
 # 가장 위쪽에 위치한 행번호 찾는 메서드
 def find(node, cs, ce, val):
@@ -52,87 +52,62 @@ def update(node, cs, ce, idx, val):
 def writeWord(mId:int, mLen:int) -> int:
     row = find(1, 1, N, mLen)
     if row == -1: return -1
-    
-    
-    
-    
-    
-    # # row에 단어를 기록
-    
-    # # 해당 열에 아무 단어가 없는 경우 걍 맨앞에 쓰자
-    # if len(row_words[row]) == 0:
-    #     # one-based
-    #     row_words[row].append((1, mLen))
-    #     update(1, 1, N, row, N-mLen)
-    
-    # # 해당 열에 단어가 하나만 있는 경우
-    # elif len(row_words[row]) == 1:
-    #     single = row_words[row][0]
-        
-    #     # 이러면 현재 단어 앞에 기록 가능
-    #     if single[0] > mLen:
-    #         heappush(row_words[row], (1, mLen))
-    #         # 빈 공간 체크 (삽입단어 ~ 원래있었던단어 공간, 오른쪽여백 비교)
-    #         space = max((single[0] - mLen - 1), (M - single[1]))
-    #         update(1, 1, N, row, space)
-        
-    #     # 현재 단어 뒤에 기록
-    #     else:
-    #         heappush(row_words[row], (single[1]+1, single[1]+mLen))
-    #         # 시작~단어1, 단어2~끝 공간비교
-    #         space = max((single[0] - 1), (M - (single[1]+mLen)))
-    #         update(1, 1, N, row, space)
-    
-    # # 해당 열에 단어가 두 개 이상인 경우
-    # else:
-    #     fit = False
-    #     # first: 다음 단어가 들어갈 공간, space_max: 세그트리에 반영할 공간
-    #     space_first = row_words[row][0][0]-1
-    #     fit_col = 0
-    #     space_max = space_first
-    #     max_col = 1
-    #     if space_first <= mLen:
-    #         fit = True
-    #         fit_col = 1
-    #     # 단어 사이를 순회해 first fit을 찾자
-    #     for i in range(len(row_words[row]) - 1):
-    #         one = row_words[row][i]
-    #         two = row_words[row][i+1]
-    #         tmp_space = two[0] - one[1] - 1
 
-    #         if not fit and tmp_space >= mLen:
-    #             fit = True
-    #             space_first = tmp_space
-    #             fit_col = one[1]+1
-            
-    #         if tmp_space > space_max:
-    #             space_max = tmp_space
-    #             max_col = one[1]+1
+    for i in range(len(row_words[row]) - 1):
+        one = row_words[row][i]
+        two = row_words[row][i+1]
+        tmp_space = two[0] - one[1] - 1
         
-    #     # 맨 마지막 공간까지 체크
-    #     tmp_space = M - row_words[row][-1][1]
-    #     if not fit and tmp_space >= mLen:
-    #         fit = True
-    #         space_first = tmp_space
-    #         fit_col = row_words[row][-1][1] + 1
-    #     if tmp_space > space_max:
-    #         space_max = tmp_space
-    #         max_col = one[1]+1
-            
-    #     heappush(row_words[row], (fit_col, fit_col+mLen-1))
-        
-    #     # 가장 큰 공간에 단어를 넣었다면
-    #     if fit_col == max_col:
-            
-        
-        
-    # # dict에 단어를 기록
-    # words[mId] = (row, _, mLen)
-
+        # first fit 찾기
+        if mLen <= tmp_space:
+            row_words[row].append((one[1]+1, one[1]+mLen))
+            input_idx = one[1]+1
+            break
     
-    # # row를 리턴
+    # 삽입 후 재정렬
+    row_words[row].sort()
     
+    # 최대 공간 찾기        
+    large_space = 0
+    for i in range(len(row_words[row]) - 1):
+        one = row_words[row][i]
+        two = row_words[row][i+1]
+        tmp_space = two[0] - one[1] - 1
+        
+        if large_space < tmp_space:
+            large_space = tmp_space
     
+    # 세그트리 허용공간 업데이트
+    update(1, 1, N, row, large_space)
+    
+    # dict에 노드 정보 넣기
+    # (행번호, 열번호, 길이)
+    words[mId] = (row, input_idx, mLen)
+    
+    # zero-base로 리턴
+    return row-1
 
 def eraseWord(mId:int) -> int:
-    return -1
+    if mId > 50001: return -1
+    if mId not in words.keys():
+        return -1
+    
+    now_word = words[mId]
+    # nr은 1-base, nc는 0-base, nl은 길이
+    nr, nc, nl = now_word
+    
+    del words[mId]
+    row_words[nr].remove((nc, nc + nl - 1))
+    
+    large_space = 0
+    
+    for i in range(len(row_words[nr]) - 1):
+        one = row_words[nr][i]
+        two = row_words[nr][i+1]
+        tmp_space = two[0] - one[1] - 1
+        
+        if large_space < tmp_space:
+            large_space = tmp_space
+                   
+    update(1, 1, N, nr, large_space)
+    return nr - 1
