@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 
 class 단어암기장_Solution {
     private static BufferedReader br;
-    private static UserSolution usersolution = new UserSolution();
+    private static 단어암기장_UserSolution usersolution = new 단어암기장_UserSolution();
 
     private final static int CMD_INIT = 1;
     private final static int CMD_WRITE = 2;
