@@ -14,6 +14,7 @@ public class SW5656_BreakingBricks_김성령 {
         StringTokenizer st;
         
         int T = Integer.parseInt(br.readLine());
+
         for (int t = 1; t < T+1; t++) {
             ans = Integer.MAX_VALUE;
             st = new StringTokenizer(br.readLine());
